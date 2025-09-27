@@ -15,7 +15,7 @@
 			<div class="py-6"></div>
 		</div>
 
-		{#if appState.v.showOutput}
+		{#if appState.current.showOutput}
 			<div class="print:break-before-page">
 				<OutputParts></OutputParts>
 			</div>

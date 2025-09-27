@@ -15,9 +15,9 @@
 	// Check PWA
 	onMount(() => {
 		if (window.matchMedia('(display-mode: standalone)').matches) {
-			appState.v.isPWAapp = true;
+			appState.current.isPWAapp = true;
 		} else {
-			appState.v.isPWAapp = false;
+			appState.current.isPWAapp = false;
 		}
 	});
 </script>

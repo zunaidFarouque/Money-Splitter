@@ -3,18 +3,40 @@
 	import {
 		appState,
 		data,
-		loadExampleDataset,
+		// loadExampleDataset, // This will need to be adapted
 		mermaidState,
 		resetPeopleData
 	} from '$lib/state.svelte';
 	import { Paperclip } from 'lucide-svelte';
 	import autoAnimate from '@formkit/auto-animate';
 
+	// Helper function to load example data with the new store syntax
+	function loadExampleDataset() {
+		data.reset(); // First, reset to default structure
+		// Then, set the new values
+		data.current = {
+			totalAmount: 100,
+			totalNoOfPeople: 10,
+			peopleData: [
+				{ id: 1, name: 'a', paid: 12 },
+				{ id: 2, name: 'b', paid: 14 },
+				{ id: 3, name: 'c', paid: 6 },
+				{ id: 4, name: 'd', paid: 9 },
+				{ id: 5, name: 'e', paid: 18 },
+				{ id: 6, name: 'f', paid: 7 },
+				{ id: 7, name: 'g', paid: 3 },
+				{ id: 8, name: 'h', paid: 13 },
+				{ id: 9, name: 'i', paid: 5 },
+				{ id: 10, name: 'j', paid: 13 }
+			]
+		};
+	}
+
 	let amountToPayPerPerson = $derived(
-		Number((data.v.totalAmount / data.v.totalNoOfPeople).toFixed(2))
+		Number((data.current.totalAmount / data.current.totalNoOfPeople).toFixed(2))
 	);
 	let peopleData_sumPaid = $derived(
-		data.v.peopleData.reduce((sum, person) => sum + person.paid, 0)
+		data.current.peopleData.reduce((sum, person) => sum + person.paid, 0)
 	);
 
 	import { Modal } from '@skeletonlabs/skeleton-svelte';
@@ -43,7 +65,7 @@
 					placeholder="Enter Number"
 					min="0"
 					step="0.01"
-					bind:value={data.v.totalAmount}
+					bind:value={data.current.totalAmount}
 				/>
 			</label>
 
@@ -55,7 +77,7 @@
 					min="2"
 					step="1"
 					placeholder="Enter Number"
-					bind:value={data.v.totalNoOfPeople}
+					bind:value={data.current.totalNoOfPeople}
 				/>
 			</label>
 		</div>
@@ -64,15 +86,16 @@
 		</p>
 
 		<button
+			type="button"
 			class="btn preset-filled w-full print:hidden"
 			onclick={() => {
 				resetPeopleData(false);
-				appState.v.showInputTable = true;
+				appState.current.showInputTable = true;
 			}}>Start Input</button
 		>
 	</form>
 
-	{#if appState.v.showInputTable}
+	{#if appState.current.showInputTable}
 		<h4 class="h4 pt-8">People Details</h4>
 		<table class="table">
 			<thead>
@@ -80,13 +103,10 @@
 					<th class="!text-center"><span>ID </span> </th>
 					<th class="!text-center"><span>Name </span> </th>
 					<th class="!text-center"><span>Amount Paid </span> </th>
-
-					<!-- ref:OWING-ISSUE Following thing is removed, as users do not understand the use. in future, it will be toggle-able using a settings page -->
-					<!-- <th class="!text-center"><span>Amount Owing </span> </th> -->
 				</tr>
 			</thead>
 			<tbody class="[&>tr]:hover:preset-outlined-primary-50-950" use:autoAnimate>
-				{#each data.v.peopleData as person (person.id)}
+				{#each data.current.peopleData as person (person.id)}
 					<tr>
 						<td>{person.id}</td>
 						<td>
@@ -119,15 +139,6 @@
 								}}
 							/>
 						</td>
-
-						<!-- ref:OWING-ISSUE -->
-						<!-- <td class="text-right">
-							<span
-								class={amountToPayPerPerson - person.paid < 0 ? 'text-green-500' : 'text-red-500'}
-							>
-								{(amountToPayPerPerson - person.paid).toFixed(2)}
-							</span>
-						</td> -->
 					</tr>
 				{/each}
 				<tr>
@@ -135,44 +146,34 @@
 					<td class="text-right"> <span class="mx-3"> Total </span> </td>
 					<td class="text-right">
 						<span
-							class="{peopleData_sumPaid == data.v.totalAmount
+							class="{peopleData_sumPaid == data.current.totalAmount
 								? 'text-green-500'
 								: 'text-red-500'} mx-3"
 						>
 							{peopleData_sumPaid}
-							{peopleData_sumPaid == data.v.totalAmount
+							{peopleData_sumPaid == data.current.totalAmount
 								? ''
-								: '  (Mismatch: ' + (peopleData_sumPaid - data.v.totalAmount) + ')'}
+								: '  (Mismatch: ' + (peopleData_sumPaid - data.current.totalAmount) + ')'}
 						</span>
 					</td>
-
-					<!-- ref:OWING-ISSUE -->
-					<!-- <td class="text-right">
-						<span
-							class={peopleData_sumPaid == data.v.totalAmount ? 'text-green-500' : 'text-red-500'}
-						>
-							{peopleData_sumPaid == data.v.totalAmount
-								? ''
-								: 'Mismatch! (' + (peopleData_sumPaid - data.v.totalAmount) + ')'}
-						</span>
-					</td> -->
 				</tr>
 			</tbody>
 		</table>
 
 		<div class="w-full text-center print:hidden">
 			<button
-				title={data.v.totalAmount == 0 || peopleData_sumPaid != data.v.totalAmount
+				type="button"
+				title={data.current.totalAmount == 0 || peopleData_sumPaid != data.current.totalAmount
 					? 'Check the people details table'
 					: ''}
 				class="btn preset-filled-primary-500 w-1/2"
-				disabled={data.v.totalAmount == 0 || peopleData_sumPaid != data.v.totalAmount}
+				disabled={data.current.totalAmount == 0 || peopleData_sumPaid != data.current.totalAmount}
 				onclick={() => {
-					mermaidState.mermaidString = calculateAllTransactions(data.v);
-					appState.v.showOutput = true;
+					mermaidState.mermaidString = calculateAllTransactions(data.current);
+					appState.current.showOutput = true;
 				}}
 			>
-				{#if !appState.v.showOutput}
+				{#if !appState.current.showOutput}
 					Calculate
 				{:else}
 					Calculated!
@@ -182,20 +183,13 @@
 	{/if}
 </div>
 
-<!--  -->
-<!--  -->
-<!--  -->
-<!--  -->
-<!--  -->
-<!--  -->
-<!--  -->
-
+<!-- SNIPPETS -->
 {#snippet ExampleDatasetLoader()}
 	<Modal
 		open={modalOpenState_example}
 		onOpenChange={(e) => (modalOpenState_example = e.open)}
 		triggerBase="btn preset-tonal h-8 mx-2"
-		contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-screen-sm"
+		contentBase="card bg-surface-800-900 p-4 space-y-4 shadow-xl max-w-screen-sm"
 	>
 		{#snippet trigger()}
 			<Paperclip size={20} />
@@ -227,7 +221,7 @@
 		open={modalOpenState_reset}
 		onOpenChange={(e) => (modalOpenState_reset = e.open)}
 		triggerBase="btn preset-tonal h-8"
-		contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-screen-sm"
+		contentBase="card bg-surface-800-900 p-4 space-y-4 shadow-xl max-w-screen-sm"
 	>
 		{#snippet trigger()}
 			Reset
