@@ -8,6 +8,9 @@
 
 @source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
 
+/* Enable class-based dark mode */
+@variant dark (&:where(.dark, .dark *));
+
 @layer base {
 	input[type='number']::-webkit-inner-spin-button,
 	input[type='number']::-webkit-outer-spin-button {

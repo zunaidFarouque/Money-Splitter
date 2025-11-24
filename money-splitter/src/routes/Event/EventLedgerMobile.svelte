@@ -4,7 +4,8 @@
 		groups,
 		ledgers,
 		type Transaction,
-		type Person
+		type Person,
+		loadEventLedgerExample
 	} from '$lib/state.svelte';
 	import autoAnimate from '@formkit/auto-animate';
 	import { Modal } from '@skeletonlabs/skeleton-svelte';
@@ -19,6 +20,7 @@
 	let showCreateLedgerModal = $state(false);
 	let showAddExpenseModal = $state(false);
 	let showSettlementModal = $state(false);
+	let showExampleModal = $state(false);
 
 	// Assuming you have these variables available in this component
 	let transactions: Transaction[] = [];
@@ -67,6 +69,13 @@
 	<header class="flex items-center justify-between">
 		<h1 class="h1">Events</h1>
 		<div>
+			<button
+				class="btn preset-tonal mr-2 h-10 w-10 p-0"
+				onclick={() => (showExampleModal = true)}
+				title="Load Example Dataset"
+			>
+				📎
+			</button>
 			<button class="btn preset-tonal mr-2" onclick={() => (showManageGroupsModal = true)}>
 				Manage Groups
 			</button>
@@ -180,6 +189,40 @@
 			{#if activeLedger}
 				<Settlement ledger={activeLedger} close={() => (showSettlementModal = false)} />
 			{/if}
+		{/snippet}
+	</Modal>
+
+	<!-- Example Dataset Modal -->
+	<Modal
+		open={showExampleModal}
+		onOpenChange={(e) => (showExampleModal = e.open)}
+		contentBase="card bg-surface-800-900 p-4 space-y-4 shadow-xl max-w-screen-sm"
+	>
+		{#snippet content()}
+			<header class="flex justify-between">
+				<h4 class="h4">Load Example Dataset?</h4>
+			</header>
+			<article>
+				<p class="opacity-60">
+					This will create a sample "Japan Trip 2024" group with 4 members and a "Tokyo Expenses"
+					ledger with 6 example transactions.
+				</p>
+			</article>
+			<footer class="flex justify-end gap-4">
+				<button type="button" class="btn preset-tonal" onclick={() => (showExampleModal = false)}>
+					Cancel
+				</button>
+				<button
+					type="button"
+					class="btn preset-filled"
+					onclick={() => {
+						loadEventLedgerExample();
+						showExampleModal = false;
+					}}
+				>
+					Confirm
+				</button>
+			</footer>
 		{/snippet}
 	</Modal>
 </div>

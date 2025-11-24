@@ -1,66 +1,126 @@
 <script>
 	import { base } from '$app/paths';
+	import { fade, fly } from 'svelte/transition';
 </script>
 
-<!-- 
-<div class="container mx-auto grid grid-cols-1 *:p-2">
-	<h1 class="h1">Welcome to Money Splitter App!</h1>
-	<p>
-		Ever shared costs with friends - maybe for a trip, dinner, or just splitting groceries - and
-		ended up with a tangled mess of who owes what? We've all been there! Sometimes things don't
-		split perfectly at the moment, and figuring out the fairest way to settle up later, especially
-		with a group, can be a real headache.
-	</p>
+<div class="container relative mx-auto flex min-h-[80vh] flex-col items-center justify-center p-4">
+	<!-- Background Gradient -->
+	<div
+		class="from-primary-500/5 pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] via-transparent to-transparent opacity-50"
+	></div>
 
-	<p>
-		That's exactly what the Money Splitter App is for! It's your simple sidekick for handling group
-		expenses. Just pop in the total cost and how many people are splitting it. The app figures out
-		the basic split. Then, tell it who paid what. Shazam! The app instantly shows you the <mark
-			class="mark">smartest</mark
+	<!-- Hero Section -->
+	<div class="mb-16 text-center" in:fly={{ y: -20, duration: 800, delay: 200 }}>
+		<h1
+			class="h1 from-primary-500 to-secondary-500 mb-6 bg-gradient-to-br box-decoration-clone bg-clip-text font-bold text-transparent"
 		>
-		way for everyone to pay each other back, cutting down on unnecessary transfers and making settling
-		up smooth and easy. No more awkward money chats!
-	</p>
+			Split Expenses, Stress-Free
+		</h1>
+		<p class="mx-auto max-w-2xl text-xl leading-relaxed opacity-80">
+			The easiest way to track bills, share costs, and settle up with friends.
+			<br class="hidden md:block" />
+			No more awkward math. Just simple, fair splitting.
+		</p>
+	</div>
 
-	<div class="my-8 w-full text-center">
-		<a href="{base}/App">
-			<button class="btn preset-filled-primary-500 w-1/5">Start</button>
+	<!-- Cards Section -->
+	<div class="grid w-full max-w-5xl grid-cols-1 gap-8 px-4 md:grid-cols-2">
+		<!-- Quick Split Card -->
+		<a
+			href="{base}/App"
+			class="card card-hover border-surface-500/30 group relative overflow-hidden border p-8 transition-all hover:scale-[1.02] hover:shadow-xl"
+			in:fly={{ x: -20, duration: 800, delay: 400 }}
+		>
+			<!-- Decorative blob -->
+			<div
+				class="bg-primary-500/10 group-hover:bg-primary-500/20 absolute -right-6 -top-6 h-32 w-32 rounded-full blur-3xl transition-all"
+			></div>
+
+			<div class="relative z-10 flex h-full flex-col">
+				<div class="mb-6 flex items-center gap-4">
+					<div
+						class="bg-primary-500/10 flex h-14 w-14 items-center justify-center rounded-2xl text-3xl shadow-sm"
+					>
+						🚀
+					</div>
+					<h2 class="h2 font-semibold">Quick Split</h2>
+				</div>
+				<p class="mb-8 flex-grow text-lg opacity-80">
+					Perfect for a single bill. Dinner, groceries, or a quick cab ride. Enter the total, add
+					people, and see who owes what instantly.
+				</p>
+				<button
+					class="btn preset-filled-primary-500 shadow-primary-500/20 w-full py-3 font-semibold shadow-lg"
+				>
+					Start Quick Split
+				</button>
+			</div>
+		</a>
+
+		<!-- Event Ledger Card -->
+		<a
+			href="{base}/Event"
+			class="card card-hover border-surface-500/30 group relative overflow-hidden border p-8 transition-all hover:scale-[1.02] hover:shadow-xl"
+			in:fly={{ x: 20, duration: 800, delay: 600 }}
+		>
+			<!-- Decorative blob -->
+			<div
+				class="bg-secondary-500/10 group-hover:bg-secondary-500/20 absolute -right-6 -top-6 h-32 w-32 rounded-full blur-3xl transition-all"
+			></div>
+
+			<div class="relative z-10 flex h-full flex-col">
+				<div class="mb-6 flex items-center gap-4">
+					<div
+						class="bg-secondary-500/10 flex h-14 w-14 items-center justify-center rounded-2xl text-3xl shadow-sm"
+					>
+						🧾
+					</div>
+					<h2 class="h2 font-semibold">Event Ledger</h2>
+				</div>
+				<p class="mb-8 flex-grow text-lg opacity-80">
+					Ideal for trips and shared projects. Track multiple expenses over time and get a final
+					optimized settlement plan.
+				</p>
+				<button
+					class="btn preset-filled-secondary-500 shadow-secondary-500/20 w-full py-3 font-semibold shadow-lg"
+				>
+					Start Event Ledger
+				</button>
+			</div>
 		</a>
 	</div>
-</div> -->
 
-<!-- 
-<script>
-	import { base } from '$app/paths';
-</script> -->
-
-<div class="container mx-auto grid grid-cols-1 text-center *:p-2">
-	<h1 class="h1">How would you like to split?</h1>
-	<p class="text-lg text-slate-500">Choose the best method for your situation.</p>
-
-	<div class="my-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-		<div class="card flex flex-col p-4 text-left">
-			<h2 class="h2">🚀 Quick Split</h2>
-			<p class="mt-2 flex-grow">
-				Best for settling a <strong>single, known total</strong>. Perfect for a restaurant bill,
-				groceries, or any situation where you already know the final amount and just need to figure
-				out who owes whom.
-			</p>
-			<a href="{base}/App" class="mt-4">
-				<button class="btn preset-filled-primary-500 w-full">Use Quick Split</button>
-			</a>
-		</div>
-
-		<div class="card flex flex-col p-4 text-left">
-			<h2 class="h2">🧾 Event Ledger</h2>
-			<p class="mt-2 flex-grow">
-				Best for tracking <strong>multiple expenses over time</strong>. Perfect for a trip, a
-				project, or a shared house where you want to log each transaction as it happens to get a
-				final, optimized settlement.
-			</p>
-			<a href="{base}/Event" class="mt-4">
-				<button class="btn preset-filled-secondary-500 w-full">Use Event Ledger</button>
-			</a>
+	<!-- How It Works Section -->
+	<div class="mt-24 w-full max-w-5xl px-4" in:fly={{ y: 20, duration: 800, delay: 800 }}>
+		<h3 class="h3 mb-12 text-center font-bold">How It Works</h3>
+		<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+			<div class="flex flex-col items-center text-center">
+				<div
+					class="bg-surface-500/10 mb-4 flex h-16 w-16 items-center justify-center rounded-full text-3xl"
+				>
+					✍️
+				</div>
+				<h4 class="h4 mb-2 font-semibold">1. Add Expenses</h4>
+				<p class="opacity-70">Enter who paid for what. It's quick and easy.</p>
+			</div>
+			<div class="flex flex-col items-center text-center">
+				<div
+					class="bg-surface-500/10 mb-4 flex h-16 w-16 items-center justify-center rounded-full text-3xl"
+				>
+					🧮
+				</div>
+				<h4 class="h4 mb-2 font-semibold">2. Split Costs</h4>
+				<p class="opacity-70">The app calculates the fairest way to split the total.</p>
+			</div>
+			<div class="flex flex-col items-center text-center">
+				<div
+					class="bg-surface-500/10 mb-4 flex h-16 w-16 items-center justify-center rounded-full text-3xl"
+				>
+					💸
+				</div>
+				<h4 class="h4 mb-2 font-semibold">3. Settle Up</h4>
+				<p class="opacity-70">See exactly who owes whom. No more confusion.</p>
+			</div>
 		</div>
 	</div>
 </div>
