@@ -61,7 +61,7 @@
 				onclick={toggleTheme}
 				aria-label="Toggle Dark Mode"
 			>
-				<span class="text-xl">{isDark ? '🌙' : '☀️'}</span>
+				<span class="text-xs">{isDark ? '🌙' : '☀️'}</span>
 			</button>
 		{/snippet}
 	</AppBar>

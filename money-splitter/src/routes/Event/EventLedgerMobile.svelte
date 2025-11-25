@@ -68,7 +68,7 @@
 	<!-- Header Section -->
 	<header class="flex items-center justify-between">
 		<h1 class="h1">Events</h1>
-		<div>
+		<div class="flex flex-wrap justify-end">
 			<button
 				class="btn preset-tonal mr-2 h-10 w-10 p-0"
 				onclick={() => (showExampleModal = true)}
